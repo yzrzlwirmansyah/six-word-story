@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Emit the competition entry: one six-word story.
+"""Emit the competition entry: "The letter arrived after the funeral."
 
 The whole program does a single job — take a fixed sentence and
 save it as ``entry.txt`` in the output folder. The sentence never
@@ -15,6 +15,7 @@ folder is created on demand if it does not exist yet.
 from os import environ, makedirs
 from os.path import join
 
+# Entry gate: exactly six words, 37 characters, within the 1-60 character gate.
 STORY = "The letter arrived after the funeral."
 
 
