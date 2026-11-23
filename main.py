@@ -1,21 +1,40 @@
-"""Six words, one story.
+#!/usr/bin/env python3
+"""Emit the competition entry: one six-word story.
 
-Writes a single six-word story (37 characters) to entry.txt.
-Deterministic: fixed text, no randomness, no network, no time dependence.
+The whole program does a single job — take a fixed sentence and
+save it as ``entry.txt`` in the output folder. The sentence never
+changes between runs, and nothing here touches the network, the
+clock, or any random source, so repeated runs produce the same
+file every time.
+
+Where the file goes: the ``MAKEFUN_OUTPUT_DIR`` environment
+variable, when set; otherwise the ``/output`` directory. The
+folder is created on demand if it does not exist yet.
 """
 
-import os
+from os import environ, makedirs
+from os.path import join
 
-TEXT = "The letter arrived after the funeral."
+STORY = "The letter arrived after the funeral."
 
 
-def main() -> None:
-    output_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
-    os.makedirs(output_dir, exist_ok=True)
-    path = os.path.join(output_dir, "entry.txt")
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(TEXT)
+def output_folder() -> str:
+    """Return the directory the entry should land in."""
+    return environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
+
+
+def save_entry(folder: str) -> str:
+    """Write the story to entry.txt inside folder; return its path."""
+    makedirs(folder, exist_ok=True)
+    target = join(folder, "entry.txt")
+    with open(target, "w", encoding="utf-8", newline="") as handle:
+        handle.write(STORY)
+    return target
+
+
+def run() -> None:
+    save_entry(output_folder())
 
 
 if __name__ == "__main__":
-    main()
+    run()
